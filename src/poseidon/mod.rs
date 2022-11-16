@@ -123,9 +123,12 @@ impl<F: PrimeField> PoseidonSponge<F> {
 
         loop {
             // if we can finish in this call
-            if rate_start_index + remaining_elements.len() <= self.parameters.rate {
+            // The internal state is rate + capacity elements.
+            if rate_start_index + remaining_elements.len()
+                <= self.parameters.rate + self.parameters.capacity
+            {
                 for (i, element) in remaining_elements.iter().enumerate() {
-                    self.state[self.parameters.capacity + i + rate_start_index] += element;
+                    self.state[i + rate_start_index] += element;
                 }
                 self.mode = DuplexSpongeMode::Absorbing {
                     next_absorb_index: rate_start_index + remaining_elements.len(),
@@ -140,7 +143,7 @@ impl<F: PrimeField> PoseidonSponge<F> {
                 .enumerate()
                 .take(num_elements_absorbed)
             {
-                self.state[self.parameters.capacity + i + rate_start_index] += element;
+                self.state[i + rate_start_index] += element;
             }
             self.permute();
             // the input elements got truncated by num elements absorbed
