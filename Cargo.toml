@@ -1,5 +1,5 @@
 [package]
-name = "ark-sponge"
+name = "liminal-ark-pnbr-sponge"
 version = "0.3.0"
 authors = [ "arkworks contributors" ]
 description = "An implementation of the cryptographic sponge functions for zkSNARK"
